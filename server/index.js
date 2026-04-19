@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const { initDatabase, all, get } = require('./database');
+const session = require('express-session');
+const { initDatabase, all, get, run } = require('./database');
 const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
 
 const app = express();
@@ -11,10 +12,30 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(session({
+  secret: 'om-hospital-secret-2024',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 24 * 60 * 60 * 1000 } // 24 hours
+}));
 app.use(express.static(path.join(__dirname, '..', 'public')));
+
+// Auth middleware
+function requireAuth(req, res, next) {
+  if (!req.session.userId) return res.redirect('/login');
+  next();
+}
+
+function requireAdmin(req, res, next) {
+  if (!req.session.userId || req.session.role !== 'admin') return res.redirect('/login');
+  next();
+}
 
 // Start server after DB is ready
 initDatabase().then(() => {
+  // Auth Routes
+  app.use('/api/auth', require('./routes/auth'));
+
   // API Routes
   app.use('/api/departments', require('./routes/departments'));
   app.use('/api/doctors', require('./routes/doctors'));
@@ -22,7 +43,7 @@ initDatabase().then(() => {
   app.use('/api/contact', require('./routes/contact'));
 
   // Stats endpoint
-  app.get('/api/stats', (req, res) => {
+  app.get('/api/stats', requireAdmin, (req, res) => {
     const totalDoctors = get('SELECT COUNT(*) as count FROM doctors').count;
     const totalDepartments = get('SELECT COUNT(*) as count FROM departments').count;
     const totalAppointments = get('SELECT COUNT(*) as count FROM appointments').count;
@@ -36,9 +57,14 @@ initDatabase().then(() => {
   });
 
   // HTML page routes
-  ['about', 'departments', 'doctors', 'appointment', 'contact', 'admin'].forEach(page => {
+  ['about', 'departments', 'doctors', 'appointment', 'contact'].forEach(page => {
     app.get(`/${page}`, (req, res) => res.sendFile(path.join(__dirname, '..', 'public', `${page}.html`)));
   });
+
+  // Protected routes
+  app.get('/admin', requireAdmin, (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'admin.html')));
+  app.get('/dashboard', requireAuth, (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'dashboard.html')));
+  app.get('/login', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'login.html')));
 
   app.use('/api/*', notFoundHandler);
   app.use(errorHandler);
