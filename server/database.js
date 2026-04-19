@@ -47,6 +47,19 @@ async function initDatabase() {
       FOREIGN KEY (department_id) REFERENCES departments(id)
     )
   `);
+  db.run(`
+    CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      email TEXT NOT NULL UNIQUE,
+      password TEXT NOT NULL,
+      phone TEXT DEFAULT '',
+      role TEXT DEFAULT 'patient',
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  try { db.run(`ALTER TABLE appointments ADD COLUMN user_id INTEGER`); } catch (e) { }
 
   db.run(`
     CREATE TABLE IF NOT EXISTS appointments (
