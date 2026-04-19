@@ -1,0 +1,15 @@
+{
+  "name": "om-chaudhary-hospital",
+  "version": "1.0.0",
+  "description": "Om Chaudhary Hospital - Official Website",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.0",
+    "sql.js": "^1.11.0"
+  }
+}

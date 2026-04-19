@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us — Om Chaudhary Hospital</title>
+  <meta name="description" content="Learn about Om Chaudhary Hospital's mission, vision, values, and commitment to world-class healthcare.">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div id="app"></div>
+  <script src="/js/main.js"></script>
+  <script>
+  document.getElementById('app').innerHTML = `
+  ${renderNavbar('about')}
+  <div class="page-header">
+    <h1>About Om Chaudhary Hospital</h1>
+    <p>Compassionate care, cutting-edge technology, and a legacy of healing since 2005.</p>
+    <div class="breadcrumb"><a href="/">Home</a><span>${getIcon('chevron-right')}</span><span>About Us</span></div>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-content">
+          <div class="section-badge">Our Story</div>
+          <h2>A Legacy of Compassionate Healthcare</h2>
+          <p>Founded in 2005, Om Chaudhary Hospital has grown from a small clinic to one of the region's most trusted multi-specialty hospitals. Our founder, Dr. Om Chaudhary, envisioned a healthcare institution where every patient receives world-class treatment with personal care and dignity.</p>
+          <p>Today, we house 8 specialized departments, 50+ expert doctors, and state-of-the-art infrastructure serving over 25,000 patients annually. Our commitment to medical excellence and patient well-being remains at the heart of everything we do.</p>
+          <p>We are equipped with 200+ beds, 8 advanced operation theaters, a 24/7 emergency department, and the latest diagnostic facilities including MRI, CT scan, and digital X-ray systems.</p>
+        </div>
+        <div class="about-image">${getIcon('hospital', 80)}</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background:#f8fafc">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge">Our Values</div>
+        <h2>What Drives Us Every Day</h2>
+      </div>
+      <div class="values-grid">
+        ${[
+          ['heart-pulse','Compassion','We treat every patient with empathy, respect, and genuine care.'],
+          ['shield','Integrity','Transparent practices and honest communication build lasting trust.'],
+          ['award','Excellence','We pursue the highest standards in medical care and patient outcomes.'],
+          ['target','Innovation','Embracing cutting-edge technology and treatments for better results.']
+        ].map(([icon,title,desc]) => `
+          <div class="card value-card">
+            <div class="value-icon">${getIcon(icon, 28)}</div>
+            <h3>${title}</h3>
+            <p>${desc}</p>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container">
+      <h2>Experience Our Care Firsthand</h2>
+      <p>Schedule a visit or book an appointment with our specialists today.</p>
+      <a href="/appointment" class="btn">Book Appointment ${getIcon('arrow-right', 18)}</a>
+    </div>
+  </section>
+
+  ${renderFooter()}
+  `;
+  </script>
+</body>
+</html>
