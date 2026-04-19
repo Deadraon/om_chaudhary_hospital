@@ -4,174 +4,124 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Dashboard — Om Chaudhary Hospital</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/styles.css" />
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; background: #f8fafc; color: #1e293b; }
-    header {
-      background: white; border-bottom: 1px solid #e2e8f0;
-      padding: 16px 24px; display: flex; justify-content: space-between; align-items: center;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    }
-    .logo { display: flex; align-items: center; gap: 10px; }
-    .logo-icon {
-      width: 36px; height: 36px; background: #0d9488; border-radius: 8px;
-      display: flex; align-items: center; justify-content: center; font-size: 18px;
-    }
-    .logo h1 { font-size: 16px; font-weight: 700; color: #0d4f5c; }
-    .logo p { font-size: 11px; color: #64748b; }
-    .header-right { display: flex; align-items: center; gap: 12px; }
-    .user-name { font-size: 14px; color: #64748b; }
-    .btn { padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; border: none; }
-    .btn-outline { background: white; border: 1.5px solid #e2e8f0; color: #374151; }
-    .btn-primary { background: #0d9488; color: white; }
-    .btn-outline:hover { background: #f8fafc; }
-    .btn-primary:hover { background: #0f766e; }
-    main { max-width: 900px; margin: 32px auto; padding: 0 24px; }
-    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+    .dashboard-main { max-width: 960px; margin: 40px auto; padding: 0 24px; }
+    .dashboard-header { margin-bottom: 32px; }
+    .dashboard-header h1 { font-size: 28px; font-weight: 700; color: #0d4f5c; }
+    .dashboard-header p { color: #64748b; margin-top: 4px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
     .stat-card {
-      background: white; border-radius: 12px; padding: 20px;
+      background: white; border-radius: 16px; padding: 24px;
       border: 1px solid #e2e8f0; text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
-    .stat-card .number { font-size: 28px; font-weight: 700; }
-    .stat-card .label { font-size: 13px; color: #64748b; margin-top: 4px; }
+    .stat-number { font-size: 32px; font-weight: 700; }
+    .stat-label { font-size: 13px; color: #64748b; margin-top: 4px; }
     .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-    .section-header h2 { font-size: 18px; font-weight: 600; }
-    .appointment-card {
-      background: white; border-radius: 12px; padding: 20px;
+    .section-header h2 { font-size: 20px; font-weight: 600; color: #0d4f5c; }
+    .apt-card {
+      background: white; border-radius: 16px; padding: 20px;
       border: 1px solid #e2e8f0; margin-bottom: 12px;
-      transition: box-shadow 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: box-shadow 0.2s;
     }
-    .appointment-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-    .apt-header { display: flex; justify-content: space-between; align-items: flex-start; }
-    .apt-dept { font-size: 16px; font-weight: 600; color: #0d4f5c; }
-    .apt-doctor { font-size: 13px; color: #64748b; margin-top: 2px; }
-    .badge {
-      display: inline-flex; align-items: center; gap-4px; padding: 4px 10px;
-      border-radius: 20px; font-size: 12px; font-weight: 500;
-    }
+    .apt-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+    .apt-top { display: flex; justify-content: space-between; align-items: flex-start; }
+    .apt-dept { font-size: 17px; font-weight: 600; color: #0d4f5c; }
+    .apt-doctor { font-size: 13px; color: #64748b; margin-top: 3px; }
+    .badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; }
     .badge-pending { background: #fef3c7; color: #d97706; }
     .badge-confirmed { background: #dcfce7; color: #16a34a; }
     .badge-cancelled { background: #fee2e2; color: #dc2626; }
-    .apt-details { margin-top: 12px; padding-top: 12px; border-top: 1px solid #f1f5f9; display: flex; gap: 20px; flex-wrap: wrap; }
-    .apt-detail { font-size: 13px; color: #64748b; }
-    .apt-detail span { color: #1e293b; font-weight: 500; }
-    .empty { text-align: center; padding: 60px 20px; background: white; border-radius: 12px; border: 1px solid #e2e8f0; }
-    .empty h3 { font-size: 18px; font-weight: 600; margin-bottom: 8px; color: #374151; }
-    .empty p { color: #64748b; margin-bottom: 20px; }
+    .apt-info { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 12px; padding-top: 12px; border-top: 1px solid #f1f5f9; }
+    .apt-info span { font-size: 13px; color: #64748b; display: flex; align-items: center; gap: 4px; }
+    .apt-info strong { color: #374151; }
+    .empty-state { text-align: center; padding: 60px 20px; background: white; border-radius: 16px; border: 1px solid #e2e8f0; }
+    .empty-state h3 { font-size: 20px; font-weight: 600; color: #374151; margin-bottom: 8px; }
+    .empty-state p { color: #64748b; margin-bottom: 20px; }
+    @media (max-width: 640px) { .stats-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo">
-      <div class="logo-icon">🏥</div>
-      <div>
-        <h1>Om Chaudhary Hospital</h1>
-        <p>My Dashboard</p>
-      </div>
-    </div>
-    <div class="header-right">
-      <span class="user-name" id="userName">Loading...</span>
-      <button class="btn btn-outline" onclick="logout()">Logout</button>
-    </div>
-  </header>
-
-  <main>
-    <div class="stats">
-      <div class="stat-card">
-        <div class="number" id="totalCount" style="color:#0d9488">0</div>
-        <div class="label">Total Appointments</div>
-      </div>
-      <div class="stat-card">
-        <div class="number" id="confirmedCount" style="color:#16a34a">0</div>
-        <div class="label">Confirmed</div>
-      </div>
-      <div class="stat-card">
-        <div class="number" id="pendingCount" style="color:#d97706">0</div>
-        <div class="label">Pending</div>
-      </div>
-    </div>
-
-    <div class="section-header">
-      <h2>My Appointments</h2>
-      <a href="/appointment"><button class="btn btn-primary">+ Book New</button></a>
-    </div>
-
-    <div id="appointmentsList">
-      <div class="empty">
-        <h3>Loading appointments...</h3>
-      </div>
-    </div>
-  </main>
-
+  <div id="app"></div>
+  <script src="/js/main.js"></script>
   <script>
-    async function checkAuth() {
-      const res = await fetch('/api/auth/me');
-      const data = await res.json();
-      if (!data.success || !data.user) {
-        window.location.href = '/login';
-        return null;
-      }
-      return data.user;
-    }
+    document.getElementById('app').innerHTML = `
+      ${renderNavbar('dashboard')}
+      <div class="dashboard-main">
+        <div class="dashboard-header">
+          <h1 id="welcomeMsg">My Dashboard</h1>
+          <p>View and manage your appointments</p>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-number" id="totalCount" style="color:#0d9488">—</div>
+            <div class="stat-label">Total Appointments</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="confirmedCount" style="color:#16a34a">—</div>
+            <div class="stat-label">Confirmed</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="pendingCount" style="color:#d97706">—</div>
+            <div class="stat-label">Pending</div>
+          </div>
+        </div>
+        <div class="section-header">
+          <h2>My Appointments</h2>
+          <a href="/appointment" class="btn btn-primary">+ Book New</a>
+        </div>
+        <div id="appointmentsList">
+          <div class="empty-state"><p>Loading...</p></div>
+        </div>
+      </div>
+      ${renderFooter()}
+    `;
 
-    async function loadAppointments(userId) {
-      const res = await fetch(`/api/appointments/user/${userId}`);
-      const data = await res.json();
-      if (!data.success) return [];
-      return data.data || [];
-    }
-
-    function getStatusBadge(status) {
-      const classes = { pending: 'badge-pending', confirmed: 'badge-confirmed', cancelled: 'badge-cancelled' };
-      return `<span class="badge ${classes[status] || 'badge-pending'}">${status}</span>`;
-    }
+    updateNavAuth();
 
     async function init() {
-      const user = await checkAuth();
-      if (!user) return;
-
-      document.getElementById('userName').textContent = user.name;
-
-      const appointments = await loadAppointments(user.id);
+      const res = await fetch('/api/auth/me');
+      const data = await res.json();
+      if (!data.success || !data.user) { window.location.href = '/login'; return; }
       
-      document.getElementById('totalCount').textContent = appointments.length;
-      document.getElementById('confirmedCount').textContent = appointments.filter(a => a.status === 'confirmed').length;
-      document.getElementById('pendingCount').textContent = appointments.filter(a => a.status === 'pending').length;
+      document.getElementById('welcomeMsg').textContent = 'Welcome, ' + data.user.name.split(' ')[0] + '!';
+
+      const aptRes = await fetch('/api/appointments/user/' + data.user.id);
+      const aptData = await aptRes.json();
+      const apts = aptData.data || [];
+
+      document.getElementById('totalCount').textContent = apts.length;
+      document.getElementById('confirmedCount').textContent = apts.filter(a => a.status === 'confirmed').length;
+      document.getElementById('pendingCount').textContent = apts.filter(a => a.status === 'pending').length;
 
       const list = document.getElementById('appointmentsList');
-      if (appointments.length === 0) {
-        list.innerHTML = `
-          <div class="empty">
-            <h3>No appointments yet</h3>
-            <p>Book your first appointment with us!</p>
-            <a href="/appointment"><button class="btn btn-primary">Book Appointment</button></a>
-          </div>`;
+      if (apts.length === 0) {
+        list.innerHTML = \`<div class="empty-state">
+          \${getIcon('calendar', 48)}
+          <h3>No appointments yet</h3>
+          <p>Book your first appointment with us!</p>
+          <a href="/appointment" class="btn btn-primary" style="display:inline-block;margin-top:16px;">Book Appointment</a>
+        </div>\`;
         return;
       }
 
-      list.innerHTML = appointments.map(apt => `
-        <div class="appointment-card">
-          <div class="apt-header">
+      list.innerHTML = apts.map(apt => \`
+        <div class="apt-card">
+          <div class="apt-top">
             <div>
-              <div class="apt-dept">${apt.department_name || 'Department'}</div>
-              <div class="apt-doctor">Dr. ${apt.doctor_name || 'Doctor'}</div>
+              <div class="apt-dept">\${apt.department_name}</div>
+              <div class="apt-doctor">\${apt.doctor_name}</div>
             </div>
-            ${getStatusBadge(apt.status)}
+            <span class="badge badge-\${apt.status}">\${apt.status}</span>
           </div>
-          <div class="apt-details">
-            <div class="apt-detail">Date: <span>${apt.appointment_date}</span></div>
-            <div class="apt-detail">Time: <span>${apt.appointment_time}</span></div>
-            ${apt.message ? `<div class="apt-detail">Note: <span>${apt.message}</span></div>` : ''}
+          <div class="apt-info">
+            <span>\${getIcon('calendar', 14)} <strong>\${apt.appointment_date}</strong></span>
+            <span>\${getIcon('clock', 14)} <strong>\${apt.appointment_time}</strong></span>
+            \${apt.message ? \`<span>\${getIcon('activity', 14)} \${apt.message}</span>\` : ''}
           </div>
         </div>
-      `).join('');
-    }
-
-    async function logout() {
-      await fetch('/api/auth/logout', { method: 'POST' });
-      window.location.href = '/';
+      \`).join('');
     }
 
     init();

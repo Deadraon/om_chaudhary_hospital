@@ -1,4 +1,4 @@
-document.getElementById('app').innerHTML = `
+(async () => { document.getElementById('app').innerHTML = await `
 ${renderNavbar('doctors')}
 <div class="page-header">
   <h1>Our Doctors</h1>
@@ -55,3 +55,5 @@ api('/departments').then(res => {
 document.getElementById('deptFilter').addEventListener('change', loadDoctors);
 document.getElementById('searchInput').addEventListener('input', loadDoctors);
 loadDoctors();
+
+document.addEventListener('DOMContentLoaded', () => updateNavAuth());

@@ -1,4 +1,4 @@
-document.getElementById('app').innerHTML = `
+(async () => { document.getElementById('app').innerHTML = await `
 ${renderNavbar('home')}
 
 <section class="hero">
@@ -158,3 +158,5 @@ const observer = new IntersectionObserver(entries => {
 });
 const statsBar = document.getElementById('statsBar');
 if (statsBar) observer.observe(statsBar);
+
+document.addEventListener('DOMContentLoaded', () => updateNavAuth());

@@ -1,4 +1,4 @@
-document.getElementById('app').innerHTML = `
+(async () => { document.getElementById('app').innerHTML = await `
 ${renderNavbar('departments')}
 <div class="page-header">
   <h1>Our Departments</h1>
@@ -23,3 +23,5 @@ api('/departments').then(res => {
     </div>
   `).join('');
 }).catch(() => { document.getElementById('deptGrid').innerHTML = '<p>Failed to load departments.</p>'; });
+
+document.addEventListener('DOMContentLoaded', () => updateNavAuth());

@@ -1,4 +1,4 @@
-document.getElementById('app').innerHTML = `
+(async () => { document.getElementById('app').innerHTML = await `
 ${renderNavbar('appointment')}
 <div class="page-header">
   <h1>Book an Appointment</h1>
@@ -75,3 +75,5 @@ document.getElementById('appointmentForm').addEventListener('submit', async func
   } catch (err) { showToast(err.message, 'error'); }
   finally { btn.disabled = false; btn.innerHTML = `Book Appointment ${getIcon('arrow-right', 18)}`; }
 });
+
+document.addEventListener('DOMContentLoaded', () => updateNavAuth());

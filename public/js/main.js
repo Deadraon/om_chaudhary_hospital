@@ -78,6 +78,7 @@ function renderNavbar(activePage = '') {
         <a href="/departments" class="${currentPage === 'departments' ? 'active' : ''}">Departments</a>
         <a href="/doctors" class="${currentPage === 'doctors' ? 'active' : ''}">Doctors</a>
         <a href="/contact" class="${currentPage === 'contact' ? 'active' : ''}">Contact</a>
+        <span id="navAuthSection"></span>
         <a href="/appointment" class="nav-cta">Book Appointment</a>
       </div>
       <button class="nav-toggle" id="navToggle" onclick="toggleNav()">${getIcon('menu')}</button>
@@ -85,6 +86,36 @@ function renderNavbar(activePage = '') {
   </nav>`;
 }
 
+async function updateNavAuth() {
+  try {
+    const res = await fetch('/api/auth/me');
+    const data = await res.json();
+    const section = document.getElementById('navAuthSection');
+    if (!section) return;
+    if (data.success && data.user) {
+      if (data.user.role === 'admin') {
+        section.innerHTML = `
+          <a href="/dashboard" class="nav-user-btn">${getIcon('user', 16)} Account</a>
+          <a href="/admin" class="nav-admin-btn">${getIcon('shield', 16)} Admin</a>
+          <button class="nav-logout-btn" onclick="logoutUser()">Logout</button>`;
+      } else {
+        section.innerHTML = `
+          <a href="/dashboard" class="nav-user-btn">${getIcon('user', 16)} ${data.user.name.split(' ')[0]}</a>
+          <button class="nav-logout-btn" onclick="logoutUser()">Logout</button>`;
+      }
+    } else {
+      section.innerHTML = `<a href="/login" class="nav-login-btn">${getIcon('user', 16)} Login</a>`;
+    }
+  } catch(e) {
+    const section = document.getElementById('navAuthSection');
+    if (section) section.innerHTML = `<a href="/login" class="nav-login-btn">${getIcon('user', 16)} Login</a>`;
+  }
+}
+
+async function logoutUser() {
+  await fetch('/api/auth/logout', { method: 'POST' });
+  window.location.href = '/';
+}
 function toggleNav() {
   const links = document.getElementById('navLinks');
   const toggle = document.getElementById('navToggle');

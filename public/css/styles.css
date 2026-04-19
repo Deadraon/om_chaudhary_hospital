@@ -415,3 +415,67 @@ input, select, textarea { font-family: inherit; font-size: 1rem; }
   .footer-grid { grid-template-columns: 1fr; }
   .admin-stats { grid-template-columns: 1fr 1fr; }
 }
+
+/* ─── Auth Nav Buttons ─────────────────── */
+.nav-login-btn, .nav-user-btn, .nav-admin-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.nav-login-btn {
+  color: var(--teal-600, #0d9488);
+  border: 1.5px solid var(--teal-600, #0d9488);
+}
+
+.nav-login-btn:hover {
+  background: var(--teal-600, #0d9488);
+  color: white;
+}
+
+.nav-user-btn {
+  color: var(--teal-600, #0d9488);
+  border: 1.5px solid var(--teal-600, #0d9488);
+}
+
+.nav-user-btn:hover {
+  background: var(--teal-600, #0d9488);
+  color: white;
+}
+
+.nav-admin-btn {
+  color: #7c3aed;
+  border: 1.5px solid #7c3aed;
+}
+
+.nav-admin-btn:hover {
+  background: #7c3aed;
+  color: white;
+}
+
+.nav-logout-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1.5px solid #e2e8f0;
+  background: transparent;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.nav-logout-btn:hover {
+  background: #fee2e2;
+  color: #dc2626;
+  border-color: #dc2626;
+}

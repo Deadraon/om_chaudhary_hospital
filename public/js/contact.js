@@ -1,4 +1,4 @@
-document.getElementById('app').innerHTML = `
+(async () => { document.getElementById('app').innerHTML = await `
 ${renderNavbar('contact')}
 <div class="page-header">
   <h1>Contact Us</h1>
@@ -56,3 +56,5 @@ document.getElementById('contactForm').addEventListener('submit', async function
   } catch (err) { showToast(err.message, 'error'); }
   finally { btn.disabled = false; btn.innerHTML = `Send Message ${getIcon('arrow-right', 18)}`; }
 });
+
+document.addEventListener('DOMContentLoaded', () => updateNavAuth());
