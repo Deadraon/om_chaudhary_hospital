@@ -6,54 +6,82 @@
   <title>Login — Om Chaudhary Hospital</title>
   <link rel="stylesheet" href="/css/styles.css" />
   <style>
-    .auth-page {
-      min-height: 100vh;
-      background: linear-gradient(135deg, #0d4f5c 0%, #1a7a8a 50%, #0d4f5c 100%);
-      display: flex; flex-direction: column;
+    .login-page {
+      min-height: calc(100vh - 80px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+      background: #f8fafc;
     }
-    .auth-container {
-      flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 20px;
+    .login-card {
+      background: white;
+      border-radius: 20px;
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      border: 1px solid #e2e8f0;
     }
-    .auth-card {
-      background: white; border-radius: 20px; padding: 40px;
-      width: 100%; max-width: 420px; box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+    .login-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 6px;
     }
-    .auth-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-    .auth-logo svg { color: #0d9488; }
-    .auth-logo span { font-size: 18px; font-weight: 700; color: #0d4f5c; }
-    .auth-subtitle { font-size: 13px; color: #64748b; margin-bottom: 28px; }
-    .auth-tabs { display: flex; border-bottom: 2px solid #e2e8f0; margin-bottom: 24px; }
-    .auth-tab {
-      flex: 1; padding: 10px; text-align: center; cursor: pointer;
+    .login-logo svg { color: #0d9488; }
+    .login-logo span { font-size: 18px; font-weight: 700; color: #0d4f5c; }
+    .login-subtitle { font-size: 13px; color: #64748b; margin-bottom: 32px; }
+    .login-tabs {
+      display: flex;
+      background: #f1f5f9;
+      border-radius: 10px;
+      padding: 4px;
+      margin-bottom: 28px;
+    }
+    .login-tab {
+      flex: 1; padding: 9px; text-align: center; cursor: pointer;
       font-size: 14px; font-weight: 500; color: #64748b;
-      border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s;
+      border-radius: 8px; transition: all 0.2s;
     }
-    .auth-tab.active { color: #0d9488; border-bottom-color: #0d9488; }
-    .form-group { margin-bottom: 16px; }
-    .form-group label { display: block; font-size: 13px; font-weight: 500; color: #374151; margin-bottom: 6px; }
+    .login-tab.active {
+      background: white; color: #0d4f5c;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+    .form-group { margin-bottom: 18px; }
+    .form-group label {
+      display: block; font-size: 13px; font-weight: 500;
+      color: #374151; margin-bottom: 7px;
+    }
     .form-group input {
-      width: 100%; padding: 10px 14px; border: 1.5px solid #e2e8f0;
-      border-radius: 8px; font-size: 14px; outline: none; transition: border-color 0.2s;
+      width: 100%; padding: 11px 14px;
+      border: 1.5px solid #e2e8f0; border-radius: 10px;
+      font-size: 14px; outline: none; transition: border-color 0.2s;
+      font-family: inherit; color: #1e293b;
     }
     .form-group input:focus { border-color: #0d9488; }
-    .auth-btn {
-      width: 100%; padding: 12px; background: #0d9488; color: white;
-      border: none; border-radius: 8px; font-size: 15px; font-weight: 600;
-      cursor: pointer; margin-top: 8px; transition: background 0.2s;
+    .login-btn {
+      width: 100%; padding: 13px;
+      background: #0d9488; color: white;
+      border: none; border-radius: 10px;
+      font-size: 15px; font-weight: 600;
+      cursor: pointer; margin-top: 4px;
+      transition: background 0.2s; font-family: inherit;
     }
-    .auth-btn:hover { background: #0f766e; }
-    .auth-btn:disabled { background: #94a3b8; cursor: not-allowed; }
-    .auth-error {
+    .login-btn:hover { background: #0f766e; }
+    .login-btn:disabled { background: #94a3b8; cursor: not-allowed; }
+    .login-error {
       background: #fef2f2; color: #dc2626; padding: 10px 14px;
       border-radius: 8px; font-size: 13px; margin-bottom: 16px; display: none;
     }
-    .auth-success {
+    .login-success {
       background: #f0fdf4; color: #16a34a; padding: 10px 14px;
       border-radius: 8px; font-size: 13px; margin-bottom: 16px; display: none;
     }
-    .auth-back { text-align: center; margin-top: 20px; }
-    .auth-back a { color: #0d9488; font-size: 13px; text-decoration: none; }
-    .auth-back a:hover { text-decoration: underline; }
+    .login-back { text-align: center; margin-top: 24px; }
+    .login-back a { color: #64748b; font-size: 13px; text-decoration: none; }
+    .login-back a:hover { color: #0d9488; }
+    .divider { border: none; border-top: 1px solid #e2e8f0; margin: 24px 0; }
   </style>
 </head>
 <body>
@@ -62,21 +90,21 @@
   <script>
     document.getElementById('app').innerHTML = `
       ${renderNavbar('login')}
-      <div class="auth-container">
-        <div class="auth-card">
-          <div class="auth-logo">
-            ${getIcon('hospital', 32)}
+      <div class="login-page">
+        <div class="login-card">
+          <div class="login-logo">
+            ${getIcon('hospital', 30)}
             <span>Om Chaudhary Hospital</span>
           </div>
-          <p class="auth-subtitle">Patient Portal — Login or create an account</p>
+          <p class="login-subtitle">Patient Portal — Login or create an account</p>
 
-          <div class="auth-tabs">
-            <div class="auth-tab active" onclick="switchTab('login')">Login</div>
-            <div class="auth-tab" onclick="switchTab('signup')">Sign Up</div>
+          <div class="login-tabs">
+            <div class="login-tab active" onclick="switchTab('login')">Login</div>
+            <div class="login-tab" onclick="switchTab('signup')">Sign Up</div>
           </div>
 
-          <div id="authError" class="auth-error"></div>
-          <div id="authSuccess" class="auth-success"></div>
+          <div id="loginError" class="login-error"></div>
+          <div id="loginSuccess" class="login-success"></div>
 
           <form id="loginForm">
             <div class="form-group">
@@ -87,7 +115,7 @@
               <label>Password</label>
               <input type="password" id="loginPassword" placeholder="••••••••" required />
             </div>
-            <button type="submit" class="auth-btn" id="loginBtn">Login</button>
+            <button type="submit" class="login-btn" id="loginBtn">Login</button>
           </form>
 
           <form id="signupForm" style="display:none">
@@ -107,10 +135,11 @@
               <label>Password</label>
               <input type="password" id="signupPassword" placeholder="Min 6 characters" required minlength="6" />
             </div>
-            <button type="submit" class="auth-btn" id="signupBtn">Create Account</button>
+            <button type="submit" class="login-btn" id="signupBtn">Create Account</button>
           </form>
 
-          <div class="auth-back"><a href="/">← Back to Website</a></div>
+          <hr class="divider" />
+          <div class="login-back"><a href="/">← Back to Website</a></div>
         </div>
       </div>
       ${renderFooter()}
@@ -119,25 +148,24 @@
     updateNavAuth();
 
     function switchTab(tab) {
-      document.querySelectorAll('.auth-tab').forEach((t, i) => {
+      document.querySelectorAll('.login-tab').forEach((t, i) => {
         t.classList.toggle('active', (i === 0 && tab === 'login') || (i === 1 && tab === 'signup'));
       });
       document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
       document.getElementById('signupForm').style.display = tab === 'signup' ? 'block' : 'none';
-      document.getElementById('authError').style.display = 'none';
-      document.getElementById('authSuccess').style.display = 'none';
+      document.getElementById('loginError').style.display = 'none';
+      document.getElementById('loginSuccess').style.display = 'none';
     }
 
     function showError(msg) {
-      const el = document.getElementById('authError');
+      const el = document.getElementById('loginError');
       el.textContent = msg; el.style.display = 'block';
-      document.getElementById('authSuccess').style.display = 'none';
+      document.getElementById('loginSuccess').style.display = 'none';
     }
-
     function showSuccess(msg) {
-      const el = document.getElementById('authSuccess');
+      const el = document.getElementById('loginSuccess');
       el.textContent = msg; el.style.display = 'block';
-      document.getElementById('authError').style.display = 'none';
+      document.getElementById('loginError').style.display = 'none';
     }
 
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
@@ -153,7 +181,7 @@
         if (data.success) {
           showSuccess('Login successful! Redirecting...');
           setTimeout(() => { window.location.href = data.role === 'admin' ? '/admin' : '/dashboard'; }, 1000);
-        } else { showError(data.message || 'Login failed'); }
+        } else { showError(data.message || 'Invalid email or password'); }
       } catch(err) { showError('Something went wrong. Please try again.'); }
       finally { btn.disabled = false; btn.textContent = 'Login'; }
     });
