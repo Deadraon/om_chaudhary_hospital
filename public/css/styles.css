@@ -479,3 +479,39 @@ input, select, textarea { font-family: inherit; font-size: 1rem; }
   color: #dc2626;
   border-color: #dc2626;
 }
+
+/* ─── Auth Nav Buttons ─────────────────── */
+.nav-login-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--text, #1e293b);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+  font-family: inherit;
+}
+.nav-login-btn:hover { color: #0d9488; }
+.nav-user-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 18px; font-size: 14px; font-weight: 500;
+  text-decoration: none; color: #0d9488; font-family: inherit;
+}
+.nav-admin-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 14px; font-size: 14px; font-weight: 500;
+  text-decoration: none; color: #7c3aed; font-family: inherit;
+}
+.nav-logout-btn {
+  display: inline-flex; align-items: center;
+  padding: 8px 14px; font-size: 14px; font-weight: 500;
+  border: none; background: transparent; color: #64748b;
+  cursor: pointer; font-family: inherit; transition: color 0.2s;
+}
+.nav-logout-btn:hover { color: #dc2626; }

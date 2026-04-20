@@ -78,7 +78,7 @@ function renderNavbar(activePage = '') {
         <a href="/departments" class="${currentPage === 'departments' ? 'active' : ''}">Departments</a>
         <a href="/doctors" class="${currentPage === 'doctors' ? 'active' : ''}">Doctors</a>
         <a href="/contact" class="${currentPage === 'contact' ? 'active' : ''}">Contact</a>
-        <span id="navAuthSection"></span>
+        <a href="/login" class="nav-login-btn" id="navLoginBtn">Login</a>
         <a href="/appointment" class="nav-cta">Book Appointment</a>
       </div>
       <button class="nav-toggle" id="navToggle" onclick="toggleNav()">${getIcon('menu')}</button>
@@ -86,36 +86,6 @@ function renderNavbar(activePage = '') {
   </nav>`;
 }
 
-async function updateNavAuth() {
-  try {
-    const res = await fetch('/api/auth/me');
-    const data = await res.json();
-    const section = document.getElementById('navAuthSection');
-    if (!section) return;
-    if (data.success && data.user) {
-      if (data.user.role === 'admin') {
-        section.innerHTML = `
-          <a href="/dashboard" class="nav-user-btn">${getIcon('user', 16)} Account</a>
-          <a href="/admin" class="nav-admin-btn">${getIcon('shield', 16)} Admin</a>
-          <button class="nav-logout-btn" onclick="logoutUser()">Logout</button>`;
-      } else {
-        section.innerHTML = `
-          <a href="/dashboard" class="nav-user-btn">${getIcon('user', 16)} ${data.user.name.split(' ')[0]}</a>
-          <button class="nav-logout-btn" onclick="logoutUser()">Logout</button>`;
-      }
-    } else {
-      section.innerHTML = `<a href="/login" class="nav-login-btn">${getIcon('user', 16)} Login</a>`;
-    }
-  } catch(e) {
-    const section = document.getElementById('navAuthSection');
-    if (section) section.innerHTML = `<a href="/login" class="nav-login-btn">${getIcon('user', 16)} Login</a>`;
-  }
-}
-
-async function logoutUser() {
-  await fetch('/api/auth/logout', { method: 'POST' });
-  window.location.href = '/';
-}
 function toggleNav() {
   const links = document.getElementById('navLinks');
   const toggle = document.getElementById('navToggle');
@@ -177,4 +147,26 @@ window.addEventListener('scroll', () => {
 // ─── Init Doctor Avatar ─────────────────
 function getInitials(name) {
   return name.replace('Dr. ', '').split(' ').map(n => n[0]).join('').substring(0, 2);
+}
+
+// ─── Auth Nav Update ─────────────────────
+async function updateNavAuth() {
+  try {
+    const res = await fetch('/api/auth/me');
+    const data = await res.json();
+    const btn = document.getElementById('navLoginBtn');
+    if (!btn) return;
+    if (data.success && data.user) {
+      if (data.user.role === 'admin') {
+        btn.outerHTML = `<a href="/dashboard" class="nav-login-btn">My Account</a><a href="/admin" class="nav-admin-btn">Admin</a><button class="nav-logout-btn" onclick="logoutUser()">Logout</button>`;
+      } else {
+        btn.outerHTML = `<a href="/dashboard" class="nav-user-btn">${data.user.name.split(' ')[0]}</a><button class="nav-logout-btn" onclick="logoutUser()">Logout</button>`;
+      }
+    }
+  } catch(e) {}
+}
+
+async function logoutUser() {
+  await fetch('/api/auth/logout', { method: 'POST' });
+  window.location.href = '/';
 }
