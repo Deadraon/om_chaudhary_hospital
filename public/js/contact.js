@@ -1,4 +1,4 @@
-(async () => { document.getElementById('app').innerHTML = await `
+document.getElementById('app').innerHTML = `
 ${renderNavbar('contact')}
 <div class="page-header">
   <h1>Contact Us</h1>

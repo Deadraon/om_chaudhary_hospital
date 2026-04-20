@@ -1,4 +1,4 @@
-(async () => { document.getElementById('app').innerHTML = await `
+document.getElementById('app').innerHTML = `
 ${renderNavbar('home')}
 
 <section class="hero">
