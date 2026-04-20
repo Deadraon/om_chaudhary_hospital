@@ -79,11 +79,120 @@ function renderNavbar(activePage = '') {
         <a href="/doctors" class="${currentPage === 'doctors' ? 'active' : ''}">Doctors</a>
         <a href="/contact" class="${currentPage === 'contact' ? 'active' : ''}">Contact</a>
         <a href="/appointment" class="nav-cta">Book Appointment</a>
-        <a href="/login" class="nav-login-btn" id="navLoginBtn">Login</a>
+        <button class="nav-login-btn" id="navLoginBtn" onclick="openAuthModal()">Login</button>
       </div>
       <button class="nav-toggle" id="navToggle" onclick="toggleNav()">${getIcon('menu')}</button>
     </div>
-  </nav>`;
+  </nav>
+
+  <div id="authModalOverlay" onclick="handleOverlayClick(event)" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px;">
+    <div style="background:white;border-radius:20px;padding:40px;width:100%;max-width:420px;position:relative;box-shadow:0 25px 50px rgba(0,0,0,0.25);">
+      <button onclick="closeAuthModal()" style="position:absolute;top:16px;right:16px;border:none;background:#f1f5f9;border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:16px;color:#64748b;line-height:1;">✕</button>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+        ${getIcon('hospital', 28)}
+        <span style="font-size:17px;font-weight:700;color:#0d4f5c;">Om Chaudhary Hospital</span>
+      </div>
+      <p style="font-size:13px;color:#64748b;margin-bottom:28px;">Patient Portal — Login or create an account</p>
+      <div style="display:flex;background:#f1f5f9;border-radius:10px;padding:4px;margin-bottom:24px;">
+        <button id="modalTabLogin" onclick="switchModalTab('login')" style="flex:1;padding:9px;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;background:white;color:#0d4f5c;box-shadow:0 1px 4px rgba(0,0,0,0.1);font-family:inherit;">Login</button>
+        <button id="modalTabSignup" onclick="switchModalTab('signup')" style="flex:1;padding:9px;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;background:transparent;color:#64748b;font-family:inherit;">Sign Up</button>
+      </div>
+      <div id="modalMsg" style="display:none;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:16px;"></div>
+      <div id="modalLoginForm">
+        <div style="margin-bottom:16px;"><label style="display:block;font-size:13px;font-weight:500;color:#374151;margin-bottom:6px;">Email Address</label><input id="modalLoginEmail" type="email" placeholder="your@email.com" style="width:100%;padding:11px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;outline:none;font-family:inherit;box-sizing:border-box;" /></div>
+        <div style="margin-bottom:20px;"><label style="display:block;font-size:13px;font-weight:500;color:#374151;margin-bottom:6px;">Password</label><input id="modalLoginPassword" type="password" placeholder="••••••••" style="width:100%;padding:11px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;outline:none;font-family:inherit;box-sizing:border-box;" /></div>
+        <button onclick="handleModalLogin()" id="modalLoginBtn" style="width:100%;padding:13px;background:#0d9488;color:white;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;">Login</button>
+      </div>
+      <div id="modalSignupForm" style="display:none;">
+        <div style="margin-bottom:16px;"><label style="display:block;font-size:13px;font-weight:500;color:#374151;margin-bottom:6px;">Full Name</label><input id="modalSignupName" type="text" placeholder="Your full name" style="width:100%;padding:11px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;outline:none;font-family:inherit;box-sizing:border-box;" /></div>
+        <div style="margin-bottom:16px;"><label style="display:block;font-size:13px;font-weight:500;color:#374151;margin-bottom:6px;">Email Address</label><input id="modalSignupEmail" type="email" placeholder="your@email.com" style="width:100%;padding:11px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;outline:none;font-family:inherit;box-sizing:border-box;" /></div>
+        <div style="margin-bottom:16px;"><label style="display:block;font-size:13px;font-weight:500;color:#374151;margin-bottom:6px;">Phone Number</label><input id="modalSignupPhone" type="tel" placeholder="+91 98765 43210" style="width:100%;padding:11px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;outline:none;font-family:inherit;box-sizing:border-box;" /></div>
+        <div style="margin-bottom:20px;"><label style="display:block;font-size:13px;font-weight:500;color:#374151;margin-bottom:6px;">Password</label><input id="modalSignupPassword" type="password" placeholder="Min 6 characters" style="width:100%;padding:11px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;outline:none;font-family:inherit;box-sizing:border-box;" /></div>
+        <button onclick="handleModalSignup()" id="modalSignupBtn" style="width:100%;padding:13px;background:#0d9488;color:white;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;">Create Account</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function openAuthModal() {
+  const overlay = document.getElementById('authModalOverlay');
+  overlay.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAuthModal() {
+  const overlay = document.getElementById('authModalOverlay');
+  overlay.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('authModalOverlay')) closeAuthModal();
+}
+
+function switchModalTab(tab) {
+  const loginTab = document.getElementById('modalTabLogin');
+  const signupTab = document.getElementById('modalTabSignup');
+  const loginForm = document.getElementById('modalLoginForm');
+  const signupForm = document.getElementById('modalSignupForm');
+  const msg = document.getElementById('modalMsg');
+  msg.style.display = 'none';
+  if (tab === 'login') {
+    loginTab.style.background = 'white'; loginTab.style.color = '#0d4f5c'; loginTab.style.boxShadow = '0 1px 4px rgba(0,0,0,0.1)';
+    signupTab.style.background = 'transparent'; signupTab.style.color = '#64748b'; signupTab.style.boxShadow = 'none';
+    loginForm.style.display = 'block'; signupForm.style.display = 'none';
+  } else {
+    signupTab.style.background = 'white'; signupTab.style.color = '#0d4f5c'; signupTab.style.boxShadow = '0 1px 4px rgba(0,0,0,0.1)';
+    loginTab.style.background = 'transparent'; loginTab.style.color = '#64748b'; loginTab.style.boxShadow = 'none';
+    signupForm.style.display = 'block'; loginForm.style.display = 'none';
+  }
+}
+
+function showModalMsg(msg, type) {
+  const el = document.getElementById('modalMsg');
+  el.textContent = msg;
+  el.style.display = 'block';
+  el.style.background = type === 'error' ? '#fef2f2' : '#f0fdf4';
+  el.style.color = type === 'error' ? '#dc2626' : '#16a34a';
+}
+
+async function handleModalLogin() {
+  const btn = document.getElementById('modalLoginBtn');
+  btn.disabled = true; btn.textContent = 'Logging in...';
+  try {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: document.getElementById('modalLoginEmail').value, password: document.getElementById('modalLoginPassword').value })
+    });
+    const data = await res.json();
+    if (data.success) {
+      showModalMsg('Login successful! Redirecting...', 'success');
+      setTimeout(() => { window.location.href = data.role === 'admin' ? '/admin' : '/dashboard'; }, 1000);
+    } else { showModalMsg(data.message || 'Invalid email or password', 'error'); }
+  } catch(e) { showModalMsg('Something went wrong. Please try again.', 'error'); }
+  finally { btn.disabled = false; btn.textContent = 'Login'; }
+}
+
+async function handleModalSignup() {
+  const btn = document.getElementById('modalSignupBtn');
+  btn.disabled = true; btn.textContent = 'Creating account...';
+  try {
+    const res = await fetch('/api/auth/signup', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: document.getElementById('modalSignupName').value,
+        email: document.getElementById('modalSignupEmail').value,
+        phone: document.getElementById('modalSignupPhone').value,
+        password: document.getElementById('modalSignupPassword').value
+      })
+    });
+    const data = await res.json();
+    if (data.success) {
+      showModalMsg('Account created! Redirecting...', 'success');
+      setTimeout(() => { window.location.href = '/dashboard'; }, 1000);
+    } else { showModalMsg(data.message || 'Signup failed', 'error'); }
+  } catch(e) { showModalMsg('Something went wrong. Please try again.', 'error'); }
+  finally { btn.disabled = false; btn.textContent = 'Create Account'; }
 }
 
 function toggleNav() {
