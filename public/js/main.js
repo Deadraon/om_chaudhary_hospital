@@ -78,8 +78,8 @@ function renderNavbar(activePage = '') {
         <a href="/departments" class="${currentPage === 'departments' ? 'active' : ''}">Departments</a>
         <a href="/doctors" class="${currentPage === 'doctors' ? 'active' : ''}">Doctors</a>
         <a href="/contact" class="${currentPage === 'contact' ? 'active' : ''}">Contact</a>
-        <a href="/login" class="nav-login-btn" id="navLoginBtn">Login</a>
         <a href="/appointment" class="nav-cta">Book Appointment</a>
+        <a href="/login" class="nav-login-btn" id="navLoginBtn">Login</a>
       </div>
       <button class="nav-toggle" id="navToggle" onclick="toggleNav()">${getIcon('menu')}</button>
     </div>

@@ -48,7 +48,7 @@ button { cursor: pointer; font-family: inherit; border: none; }
 ul { list-style: none; }
 input, select, textarea { font-family: inherit; font-size: 1rem; }
 
-.container { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+.container { max-width: 1400px; margin: 0 auto; padding: 0 40px; }
 
 /* ─── NAVBAR ─────────────────────────────────────── */
 .navbar {
